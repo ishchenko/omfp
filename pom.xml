@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>net.ishchenko.omfp</groupId>
+    <artifactId>omfp-parent</artifactId>
+    <version>0.1.0-SNAPSHOT</version>
+    <name>omfp - parent pom</name>
+
+    <packaging>pom</packaging>
+
+    <scm>
+        <connection>scm:git:file://g:/Work/omfp</connection>
+        <developerConnection>scm:git:file://g:/Work/omfp</developerConnection>
+    </scm>
+
+    <modules>
+        <module>omfp-model</module>
+        <module>omfp-export</module>
+        <module>omfp-core</module>
+        <module>omfp-runner</module>
+        <module>omfp-distribution</module>
+    </modules>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.7</version>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.5</source>
+                    <target>1.5</target>
+                </configuration>
+            </plugin>
+
+        </plugins>
+
+    </build>
+
+
+</project>

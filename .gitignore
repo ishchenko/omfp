@@ -1,0 +1,6 @@
+/.idea
+/omfp-*/target
+/target
+*.iml
+/fb2
+/itext
