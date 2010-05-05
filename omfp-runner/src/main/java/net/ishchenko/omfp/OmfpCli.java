@@ -153,15 +153,7 @@ public class OmfpCli {
     }
 
     private static void printHelpAndExit(Options options) {
-        String jar;
-        try {
-            Properties props = new Properties();
-            props.load(OmfpCli.class.getResourceAsStream("/omfp-runner.properties"));
-            jar = props.getProperty("jar");
-        } catch (IOException e) {
-            jar = "omfp-runner.jar";
-        }
-        new HelpFormatter().printHelp("java -jar " + jar + " [options] input", options);
+        new HelpFormatter().printHelp("omfp [options] input", options);
         System.exit(1);
     }
 
