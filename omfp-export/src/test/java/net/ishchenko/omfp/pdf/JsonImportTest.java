@@ -26,8 +26,8 @@ public class JsonImportTest {
         assertEquals(111.11f, settings.getPageWidth(), .001);
         assertEquals(222.22f, settings.getPageHeight(), .001);
         assertEquals(13f, settings.getSize(), .001);
-        assertEquals(11f, settings.getSizeSmall(), .001);
-        assertEquals(9f, settings.getSizeVerysmall(), .001);
+        assertEquals(13f * .777f, settings.getSizeSmall(), .001);
+        assertEquals(13f * .555f, settings.getSizeVerysmall(), .001);
         assertEquals(3.14f, settings.getMargin(), .001);
 
     }
