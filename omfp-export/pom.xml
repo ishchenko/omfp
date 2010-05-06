@@ -44,15 +44,15 @@
     <dependencies>
 
         <dependency>
-            <groupId>com.itextpdf</groupId>
-            <artifactId>itextpdf</artifactId>
+            <groupId>net.ishchenko.omfp</groupId>
+            <artifactId>itextpdf-omfp</artifactId>
             <version>5.0.1</version>
         </dependency>
 
         <dependency>
-            <groupId>com.itextpdf</groupId>
-            <artifactId>itext-hyph</artifactId>
-            <version>1.0.0</version>
+            <groupId>net.ishchenko.omfp</groupId>
+            <artifactId>itext-hyph-omfp</artifactId>
+            <version>1.0</version>
         </dependency>
 
         <dependency>
@@ -75,5 +75,11 @@
 
     </dependencies>
 
+    <repositories>
+        <repository>
+            <id>googlecode-omfp</id>
+            <url>http://omfp.googlecode.com/svn/repo</url>
+        </repository>
+    </repositories>
 
 </project>
