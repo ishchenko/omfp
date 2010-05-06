@@ -20,7 +20,7 @@ public class SettingsBuilderTest {
     public void testFileHandling() throws IOException, InvalidConfigurationException {
 
         InputStream input = SettingsBuilderTest.class.getResourceAsStream("/test-settings-builder.properties");
-        PdfSettings settings = new PdfSettings.Builder(input).build();
+        PdfSettings settings = new PdfSettings.Builder(input, PdfSettings.Builder.StyleType.NATIVE).build();
 
         assertEquals(53.6f, settings.getPageWidth(), .001);
         assertEquals(77.2f, settings.getPageHeight(), .001);
@@ -28,18 +28,18 @@ public class SettingsBuilderTest {
         assertEquals(false, settings.isMultiLevelOutline());
         assertEquals("ipad", settings.getDevice());
         assertEquals("asdqwe.ttf", settings.getBaseFontPath());
-        assertEquals(20, settings.getSize());
-        assertEquals(30, settings.getSizeSmall());
-        assertEquals(40, settings.getSizeVerysmall());
+        assertEquals(20f, settings.getSize(), 0.001);
+        assertEquals(30f, settings.getSizeSmall(), 0.001);
+        assertEquals(40f, settings.getSizeVerysmall(), 0.001);
 
         InputStream input2 = SettingsBuilderTest.class.getResourceAsStream("/test-settings-builder2.properties");
-        PdfSettings settings2 = new PdfSettings.Builder(input2).build();
+        PdfSettings settings2 = new PdfSettings.Builder(input2, PdfSettings.Builder.StyleType.NATIVE).build();
         assertEquals(true, settings2.isMultiLevelOutline());
 
         InputStream input3 = SettingsBuilderTest.class.getResourceAsStream("/test-settings-builder-bad.properties");
         boolean thrown = false;
         try {
-            new PdfSettings.Builder(input3).build();
+            new PdfSettings.Builder(input3, PdfSettings.Builder.StyleType.NATIVE).build();
         } catch (InvalidConfigurationException e) {
             thrown = true;
         }
@@ -67,9 +67,9 @@ public class SettingsBuilderTest {
         assertEquals(36.6f, settings.getPageHeight(), .001);
         assertEquals("asd/qwe", settings.getBaseFontPath());
         assertEquals("qwerty", settings.getDevice());
-        assertEquals(10, settings.getSize());
-        assertEquals(20, settings.getSizeSmall());
-        assertEquals(30, settings.getSizeVerysmall());
+        assertEquals(10f, settings.getSize(), 0.001);
+        assertEquals(20f, settings.getSizeSmall(), 0.001);
+        assertEquals(30f, settings.getSizeVerysmall(), 0.001);
         assertEquals(false, settings.isMultiLevelOutline());
 
     }

@@ -10,7 +10,6 @@ import javax.xml.XMLConstants;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import java.io.*;
-import java.util.Properties;
 import java.util.zip.ZipInputStream;
 
 /**
@@ -49,7 +48,13 @@ public class OmfpCli {
         File outFile = new File(outParent, outPath);
 
 
-        PdfSettings pdfSettings = new PdfSettings.Builder(new FileInputStream(getStylesFile(line))).build();
+        File stylesFile = getStylesFile(line);
+        FileInputStream settingsStream = new FileInputStream(stylesFile);
+        PdfSettings.Builder.StyleType styleType = PdfSettings.Builder.StyleType.NATIVE;
+        if (stylesFile.getName().endsWith(".json")) {
+            styleType = PdfSettings.Builder.StyleType.FB2PDF;
+        }
+        PdfSettings pdfSettings = new PdfSettings.Builder(settingsStream, styleType).build();
 
         FileOutputStream outputStream = new FileOutputStream(outFile);
         OmfpConverter.convert(getSchema(line), getInputStream(inFile), new FictionBookVisitor[]{
@@ -62,17 +67,12 @@ public class OmfpCli {
         //that's why app.name parameter is checked here 
         if (line.hasOption("g") || "omfp-with-preview".equals(System.getProperty("app.name"))) {
 
-            String device;
+            String previewDevice = pdfSettings.getDevice();
             if (line.getOptionValue("p") != null) {
-                device = line.getOptionValue("p");
-            } else {
-                //the same as config base name
-                Properties settings = new Properties();
-                settings.load(new FileInputStream(getStylesFile(line)));
-                device = settings.getProperty("device"); //can be null. no device background in that case.
+                previewDevice = line.getOptionValue("p");
             }
+            new OmfpGui().show(outFile, previewDevice);
 
-            new OmfpGui().show(outFile, device);
         }
 
     }

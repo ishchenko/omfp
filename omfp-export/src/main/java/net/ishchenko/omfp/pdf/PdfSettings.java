@@ -2,7 +2,6 @@ package net.ishchenko.omfp.pdf;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -18,9 +17,9 @@ public class PdfSettings {
 
     private String device;
     private String baseFontPath;
-    private int size = 9;
-    private int sizeSmall = 7;
-    private int sizeVerysmall = 5;
+    private float size;
+    private float sizeSmall;
+    private float sizeVerysmall;
 
     private float pageWidth;
     private float pageHeight;
@@ -58,15 +57,15 @@ public class PdfSettings {
         return margin;
     }
 
-    public int getSize() {
+    public float getSize() {
         return size;
     }
 
-    public int getSizeSmall() {
+    public float getSizeSmall() {
         return sizeSmall;
     }
 
-    public int getSizeVerysmall() {
+    public float getSizeVerysmall() {
         return sizeVerysmall;
     }
 
@@ -78,11 +77,11 @@ public class PdfSettings {
 
         private static final Pattern DIMENSIONS_PATTERN = Pattern.compile("(\\d+(?:\\.\\d+)?)\\sx\\s(\\d+(?:\\.\\d+)?)");
 
-        public String device;
+        private String device;
         private String baseFontPath = "LiberationSerif-Regular.ttf";
-        private int size = 9;
-        private int sizeSmall = 7;
-        private int sizeVerysmall = 5;
+        private float size = 9;
+        private float sizeSmall = 7;
+        private float sizeVerysmall = 5;
 
         private boolean multiLevelOutline = true;
 
@@ -92,52 +91,18 @@ public class PdfSettings {
 
         private float margin = 2;
 
-        public Builder(InputStream settings) throws IOException, InvalidConfigurationException {
+        public static enum StyleType {
+            NATIVE, FB2PDF
+        }
 
-            Properties props = new Properties();
-            props.load(settings);
+        public Builder(InputStream settings, StyleType styleType) throws IOException, InvalidConfigurationException {
 
-            String dimensions = props.getProperty("dimensions");
-            if (dimensions != null) {
-                dimensions(dimensions);
-            }
-
-            String margin = props.getProperty("margin");
-            if (margin != null) {
-                margin(Float.parseFloat(margin));
-            }
-
-            String outline = props.getProperty("outline");
-            if (outline != null) {
-                if (outline.equals("flat")) {
-                    multiLevelOutline(false);
-                } else if (outline.equals("tree")) {
-                    multiLevelOutline(true);
-                } else {
-                    throw new InvalidConfigurationException("invalid outline value (" + outline + ")");
-                }
-            }
-
-            device = props.getProperty("device");
-
-            String font = props.getProperty("font");
-            if (font != null) {
-                baseFontPath(font);
-            }
-
-            String _size = props.getProperty("size");
-            if (font != null) {
-                size(Integer.parseInt(_size));
-            }
-
-            String _sizeSmall = props.getProperty("size.small");
-            if (font != null) {
-                sizeSmall(Integer.parseInt(_sizeSmall));
-            }
-
-            String _sizeVerysmall = props.getProperty("size.verysmall");
-            if (font != null) {
-                sizeVerysmall(Integer.parseInt(_sizeVerysmall));
+            switch (styleType) {
+                case NATIVE:
+                    SettingsUtils.loadFromProperties(settings, this);
+                    break;
+                case FB2PDF:
+                    SettingsUtils.loadFromJson(settings, this);
             }
 
         }
@@ -184,17 +149,17 @@ public class PdfSettings {
             return this;
         }
 
-        public Builder size(int size) {
+        public Builder size(float size) {
             this.size = size;
             return this;
         }
 
-        public Builder sizeSmall(int sizeSmall) {
+        public Builder sizeSmall(float sizeSmall) {
             this.sizeSmall = sizeSmall;
             return this;
         }
 
-        public Builder sizeVerysmall(int sizeVerysmall) {
+        public Builder sizeVerysmall(float sizeVerysmall) {
             this.sizeVerysmall = sizeVerysmall;
             return this;
         }
