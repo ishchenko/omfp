@@ -36,7 +36,7 @@ public class PreviewPanel extends JPanel {
 
     private final Object lock = new Object();
 
-    private static final String HINT = "Use your mouse wheel, or arrow buttons to scroll the document";
+    private static final String HINT = "Hint: use your mouse wheel, or arrow buttons to scroll the document";
     private Rectangle2D hintBounds;
 
     public PreviewPanel(File documentFile, File deviceFile) throws IOException {
