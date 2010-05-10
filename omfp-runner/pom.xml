@@ -6,7 +6,7 @@
     <parent>
         <artifactId>omfp-parent</artifactId>
         <groupId>net.ishchenko.omfp</groupId>
-        <version>0.1.0-SNAPSHOT</version>
+        <version>0.1.0</version>
     </parent>
 
     <artifactId>omfp-runner</artifactId>
