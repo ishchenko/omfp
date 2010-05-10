@@ -10,8 +10,9 @@
     <packaging>pom</packaging>
 
     <scm>
-        <connection>scm:git:file://g:/Work/omfp</connection>
-        <developerConnection>scm:git:file://g:/Work/omfp</developerConnection>
+        <connection>scm:git:git@github.com:ishchenko/omfp.git</connection>
+        <url>scm:git:git@github.com:ishchenko/omfp.git</url>
+        <developerConnection>scm:git:git@github.com:ishchenko/omfp.git</developerConnection>
     </scm>
 
     <modules>
