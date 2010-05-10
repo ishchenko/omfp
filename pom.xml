@@ -52,6 +52,16 @@
                 </configuration>
             </plugin>
 
+            <plugin>
+                <artifactId>maven-scm-plugin</artifactId>
+                <version>1.3</version>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.0-beta-9</version>
+            </plugin>
+
         </plugins>
 
     </build>
