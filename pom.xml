@@ -4,7 +4,7 @@
 
     <groupId>net.ishchenko.omfp</groupId>
     <artifactId>omfp-parent</artifactId>
-    <version>0.1.0</version>
+    <version>0.1.1-SNAPSHOT</version>
     <name>omfp - parent pom</name>
 
     <packaging>pom</packaging>
