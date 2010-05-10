@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>net.ishchenko.omfp</groupId>
@@ -9,10 +10,15 @@
 
     <packaging>pom</packaging>
 
+    <developers>
+        <developer>
+            <name>Max Ishchenko</name>
+        </developer>
+    </developers>
+
     <scm>
-        <connection>scm:git:git@github.com:ishchenko/omfp.git</connection>
-        <url>scm:git:git@github.com:ishchenko/omfp.git</url>
-        <developerConnection>scm:git:git@github.com:ishchenko/omfp.git</developerConnection>
+        <connection>scm:git:git://github.com/ishchenko/omfp.git</connection>
+        <developerConnection>scm:git:git://github.com/ishchenko/omfp.git</developerConnection>
     </scm>
 
     <modules>
@@ -50,5 +56,11 @@
 
     </build>
 
+    <distributionManagement>
+        <repository>
+            <id>repo.local</id>
+            <url>file:///${settings.localRepository}</url>
+        </repository>
+    </distributionManagement>
 
 </project>
