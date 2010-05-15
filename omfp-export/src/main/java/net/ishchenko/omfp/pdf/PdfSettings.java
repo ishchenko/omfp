@@ -28,6 +28,11 @@ public class PdfSettings {
     private float pageHeight = 113.9f;
     private float margin = 2;
 
+    private float marginLeft = 2;
+    private float marginRight = 2;
+    private float marginTop = 2;
+    private float marginBottom = 2;
+
     private PdfSettings() {
     }
 
@@ -47,8 +52,20 @@ public class PdfSettings {
         return pageWidth;
     }
 
-    public float getMarginMM() {
-        return margin;
+    public float getMarginBottomMM() {
+        return marginBottom;
+    }
+
+    public float getMarginLeftMM() {
+        return marginLeft;
+    }
+
+    public float getMarginRightMM() {
+        return marginRight;
+    }
+
+    public float getMarginTopMM() {
+        return marginTop;
     }
 
     public float getPageHeightPoints() {
@@ -61,6 +78,22 @@ public class PdfSettings {
 
     public float getMarginPoints() {
         return margin * MM_TO_POINTS;
+    }
+
+    public float getMarginBottomPoints() {
+        return marginBottom * MM_TO_POINTS;
+    }
+
+    public float getMarginLeftPoints() {
+        return marginLeft * MM_TO_POINTS;
+    }
+
+    public float getMarginRightPoints() {
+        return marginRight * MM_TO_POINTS;
+    }
+
+    public float getMarginTopPoints() {
+        return marginTop * MM_TO_POINTS;
     }
 
     public float getSize() {
@@ -81,7 +114,8 @@ public class PdfSettings {
 
     public static class Builder {
 
-        private static final Pattern DIMENSIONS_PATTERN = Pattern.compile("(\\d+(?:\\.\\d+)?)\\sx\\s(\\d+(?:\\.\\d+)?)");
+        private static final Pattern DIMENSIONS_PATTERN = Pattern.compile("\\A([\\d\\.,]+)\\sx\\s([\\d\\.,]+)\\Z");
+        private static final Pattern MARGINS_PATTERN = Pattern.compile("\\A([\\d\\.,]+)(?:\\s([\\d\\.,]+)(?:\\s([\\d\\.,]+)(?:\\s([\\d\\.,]+))?)?)?\\Z");
 
         private PdfSettings instance;
 
@@ -121,12 +155,54 @@ public class PdfSettings {
         public Builder dimensions(String dimensions) throws InvalidConfigurationException {
             Matcher matcher = DIMENSIONS_PATTERN.matcher(dimensions);
             if (matcher.find()) {
-                pageWidth(Float.parseFloat(matcher.group(1)));
-                pageHeight(Float.parseFloat(matcher.group(2)));
+                pageWidth(Float.parseFloat(matcher.group(1).replace(",", ".")));
+                pageHeight(Float.parseFloat(matcher.group(2).replace(",", ".")));
                 return this;
             } else {
                 throw new InvalidConfigurationException("Invalid dimensions format (" + dimensions + "). Should be like \"12.3 x 45\"");
             }
+        }
+
+        /**
+         * @param margins Something like 10 21.2 30 36.6
+         */
+        public Builder margins(String margins) throws InvalidConfigurationException, NumberFormatException {
+            Matcher matcher = MARGINS_PATTERN.matcher(margins);
+            if (matcher.find()) {
+
+                String first = matcher.group(1);
+                String second = matcher.group(2);
+                String third = matcher.group(3);
+                String fourth = matcher.group(4);
+
+                String marginTop = first;
+                String marginRight = first;
+                String marginBottom = first;
+                String marginLeft = first;
+
+                if (second != null) {
+                    marginRight = second;
+                    marginLeft = second;
+                }
+
+                if (third != null && fourth != null) {
+                    marginBottom = third;
+                    marginLeft = fourth;
+                }
+
+                if (third != null && fourth == null) {
+                    throw new InvalidConfigurationException("Invalid margins count. 1, 2 or 4 expected.");
+                }
+
+                marginTop(Float.parseFloat(marginTop.replace(",", ".")));
+                marginRight(Float.parseFloat(marginRight.replace(",", ".")));
+                marginBottom(Float.parseFloat(marginBottom.replace(",", ".")));
+                marginLeft(Float.parseFloat(marginLeft.replace(",", ".")));
+
+            } else {
+                throw new InvalidConfigurationException("Invalid margins format (" + margins + "). Should be like \"12.3 45 15.7 18\"");
+            }
+            return this;
         }
 
         public Builder pageWidth(float pageWidth) {
@@ -141,6 +217,26 @@ public class PdfSettings {
 
         public Builder margin(float margin) {
             instance.margin = margin;
+            return this;
+        }
+
+        public Builder marginLeft(float marginLeft) {
+            instance.marginLeft = marginLeft;
+            return this;
+        }
+
+        public Builder marginRight(float marginRight) {
+            instance.marginRight = marginRight;
+            return this;
+        }
+
+        public Builder marginTop(float marginTop) {
+            instance.marginTop = marginTop;
+            return this;
+        }
+
+        public Builder marginBottom(float marginBottom) {
+            instance.marginBottom = marginBottom;
             return this;
         }
 

@@ -33,6 +33,11 @@ public class SettingsUtils {
             builder.margin(Float.parseFloat(margin));
         }
 
+        String margins = props.getProperty("margins");
+        if (margins != null) {
+            builder.margins(margins);
+        }
+
         String outline = props.getProperty("outline");
         if ("flat".equals(outline)) {
             builder.multiLevelOutline(false);
@@ -93,13 +98,10 @@ public class SettingsUtils {
         builder.pageWidth(getDimensionMM(widthString, fontSize));
         builder.pageHeight(getDimensionMM(heightString, fontSize));
 
-        float marginLeft = getDimensionMM(pageStyle.getAsJsonPrimitive("marginLeft").getAsString(), fontSize);
-        float marginRight = getDimensionMM(pageStyle.getAsJsonPrimitive("marginRight").getAsString(), fontSize);
-        float marginTop = getDimensionMM(pageStyle.getAsJsonPrimitive("marginTop").getAsString(), fontSize);
-        float marginBottom = getDimensionMM(pageStyle.getAsJsonPrimitive("marginBottom").getAsString(), fontSize);
-
-        //smallest of all margins
-        builder.margin(Math.min(Math.min(marginLeft, marginRight), Math.min(marginTop, marginBottom)));
+        builder.marginTop(getDimensionMM(pageStyle.getAsJsonPrimitive("marginTop").getAsString(), fontSize));
+        builder.marginRight(getDimensionMM(pageStyle.getAsJsonPrimitive("marginRight").getAsString(), fontSize));
+        builder.marginBottom(getDimensionMM(pageStyle.getAsJsonPrimitive("marginBottom").getAsString(), fontSize));
+        builder.marginLeft(getDimensionMM(pageStyle.getAsJsonPrimitive("marginLeft").getAsString(), fontSize));
 
     }
 
