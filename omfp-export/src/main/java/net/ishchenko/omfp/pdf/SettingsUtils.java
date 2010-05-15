@@ -30,7 +30,10 @@ public class SettingsUtils {
 
         String margin = props.getProperty("margin");
         if (margin != null) {
-            builder.margin(Float.parseFloat(margin));
+            builder.marginLeft(Float.parseFloat(margin));
+            builder.marginRight(Float.parseFloat(margin));
+            builder.marginTop(Float.parseFloat(margin));
+            builder.marginBottom(Float.parseFloat(margin));
         }
 
         String margins = props.getProperty("margins");

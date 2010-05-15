@@ -173,32 +173,36 @@ public class Style {
     public void applyToMainColumn(ColumnText ct, Document document, float footnoteSpace) {
         if (footnoteSpace > 0) {
             //lets add some space between footnote and end of text. and +1 to fix approximation problems
-            footnoteSpace += getMargin() + 1;
+            footnoteSpace += settings.getMarginBottomPoints() + 1;
         }
-        ct.setSimpleColumn(getMargin(), getMargin() + footnoteSpace, document.getPageSize().getRight(getMargin()), document.getPageSize().getTop(getMargin()));
+        ct.setSimpleColumn(settings.getMarginLeftPoints(), settings.getMarginBottomPoints() + footnoteSpace,
+                document.getPageSize().getRight(settings.getMarginRightPoints()), document.getPageSize().getTop(settings.getMarginTopPoints()));
     }
 
     public void applyToFootnoteColumn(ColumnText footnoteColumn, Document document, float reservedFootnoteSpace) {
-        footnoteColumn.setSimpleColumn(getMargin(), getMargin(), document.getPageSize().getRight(getMargin()), getMargin() + reservedFootnoteSpace + 1);
+        footnoteColumn.setSimpleColumn(settings.getMarginLeftPoints(), settings.getMarginBottomPoints(),
+                document.getPageSize().getRight(settings.getMarginRightPoints()), settings.getMarginBottomPoints() + reservedFootnoteSpace + 1);
         footnoteColumn.setSpaceCharRatio(30f);
     }
 
     public float getFootnotePositionLimit(float footnoteHeight) {
-        return footnoteHeight + getMargin() * 2;
+        return footnoteHeight + settings.getMarginBottomPoints() * 2;
     }
 
     public void applyToDocument(Document pdf) {
-        applyToDocument(pdf, settings.getMarginPoints());
+        applyToDocument(pdf, settings.getMarginBottomPoints());
     }
 
     public void applyToDocument(Document pdf, float footnoteSpace) {
         pdf.setPageSize(new Rectangle(settings.getPageWidthPoints(), settings.getPageHeightPoints()));
-        pdf.setMargins(settings.getMarginPoints(), settings.getMarginPoints(), settings.getMarginPoints(), footnoteSpace);
+        pdf.setMargins(settings.getMarginLeftPoints(), settings.getMarginRightPoints(), settings.getMarginTopPoints(), footnoteSpace);
     }
 
     public void applyToFullPageImage(Image image) {
         image.setAlignment(Element.ALIGN_CENTER);
-        image.scaleToFit(settings.getPageWidthPoints() - settings.getMarginPoints() * 2, settings.getPageHeightPoints() - settings.getMarginPoints() * 2);
+        float h = settings.getPageWidthPoints() - settings.getMarginLeftPoints() - settings.getMarginRightPoints();
+        float v = settings.getPageHeightPoints() - settings.getMarginTopPoints() - settings.getMarginBottomPoints();
+        image.scaleToFit(h, v);
     }
 
     private boolean isInsideAnnotation(ProcessingContext context) {
@@ -243,14 +247,10 @@ public class Style {
         return chunk;
     }
 
-    public float getMargin() {
-        return settings.getMarginPoints();
-    }
-
     public void drawFootnotLine(PdfContentByte directContent, Document document, float yline) {
         directContent.setLineWidth(.2f);
-        directContent.moveTo(getMargin(), yline);
-        directContent.lineTo(document.getPageSize().getRight(getMargin()) / 3, yline);
+        directContent.moveTo(settings.getMarginLeftPoints(), yline);
+        directContent.lineTo(document.getPageSize().getRight(settings.getMarginRightPoints()) / 3, yline);
         directContent.stroke();
     }
 
@@ -264,7 +264,7 @@ public class Style {
 
     public float[] sliceFootnote(float bottom, float height, float reservedFootnoteSpace) {
 
-        float first = bottom - reservedFootnoteSpace - getMargin() * 2 - 2; // todo: wtf?
+        float first = bottom - reservedFootnoteSpace - settings.getMarginBottomPoints() * 2 - 2; // todo: wtf?
         float second = height - first + (getFootnoteFont().getLeading());
 
         return new float[]{first, second};

@@ -26,7 +26,6 @@ public class PdfSettings {
     //defaults are for prs-505
     private float pageWidth = 88.2f;
     private float pageHeight = 113.9f;
-    private float margin = 2;
 
     private float marginLeft = 2;
     private float marginRight = 2;
@@ -74,10 +73,6 @@ public class PdfSettings {
 
     public float getPageWidthPoints() {
         return pageWidth * MM_TO_POINTS;
-    }
-
-    public float getMarginPoints() {
-        return margin * MM_TO_POINTS;
     }
 
     public float getMarginBottomPoints() {
@@ -212,11 +207,6 @@ public class PdfSettings {
 
         public Builder pageHeight(float pageHeight) {
             instance.pageHeight = pageHeight;
-            return this;
-        }
-
-        public Builder margin(float margin) {
-            instance.margin = margin;
             return this;
         }
 
