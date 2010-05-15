@@ -104,17 +104,17 @@ public class SettingsUtils {
     }
 
     private static float getDimensionPoints(String dimension, float fontSize) {
-        return getDimensionMM(dimension, fontSize) * Dimensions.MM_TO_POINTS;
+        return getDimensionMM(dimension, fontSize) * PdfSettings.MM_TO_POINTS;
     }
 
     private static float getDimensionMM(String dimension, float fontSize) {
         float value = Float.parseFloat(dimension.substring(0, dimension.length() - 2));
         if (dimension.endsWith("pt")) {
-            return value / Dimensions.MM_TO_POINTS;
+            return value / PdfSettings.MM_TO_POINTS;
         } else if (dimension.endsWith("mm")) {
             return value;
         } else if (dimension.endsWith("em")) {
-            return fontSize * value / Dimensions.MM_TO_POINTS;
+            return fontSize * value / PdfSettings.MM_TO_POINTS;
         } else {
             throw new IllegalArgumentException("Bad dimension (" + dimension + ")");
         }

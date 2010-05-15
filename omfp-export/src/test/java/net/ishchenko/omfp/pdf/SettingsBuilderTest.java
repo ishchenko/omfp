@@ -22,9 +22,9 @@ public class SettingsBuilderTest {
         InputStream input = SettingsBuilderTest.class.getResourceAsStream("/test-settings-builder.properties");
         PdfSettings settings = new PdfSettings.Builder(input, PdfSettings.Builder.StyleType.NATIVE).build();
 
-        assertEquals(53.6f, settings.getPageWidth(), .001);
-        assertEquals(77.2f, settings.getPageHeight(), .001);
-        assertEquals(15f, settings.getMargin(), .001);
+        assertEquals(53.6f, settings.getPageWidthMM(), .001);
+        assertEquals(77.2f, settings.getPageHeightMM(), .001);
+        assertEquals(15f, settings.getMarginMM(), .001);
         assertEquals(false, settings.isMultiLevelOutline());
         assertEquals("ipad", settings.getDevice());
         assertEquals("asdqwe.ttf", settings.getBaseFontPath());
@@ -62,9 +62,9 @@ public class SettingsBuilderTest {
                 sizeVerysmall(30).
                 build();
 
-        assertEquals(23.4f, settings.getMargin(), .001);
-        assertEquals(52.3f, settings.getPageWidth(), .001);
-        assertEquals(36.6f, settings.getPageHeight(), .001);
+        assertEquals(23.4f, settings.getMarginMM(), .001);
+        assertEquals(52.3f, settings.getPageWidthMM(), .001);
+        assertEquals(36.6f, settings.getPageHeightMM(), .001);
         assertEquals("asd/qwe", settings.getBaseFontPath());
         assertEquals("qwerty", settings.getDevice());
         assertEquals(10f, settings.getSize(), 0.001);
@@ -94,8 +94,8 @@ public class SettingsBuilderTest {
                 dimensions(dimensions).
                 build();
 
-        assertEquals(width, settings2.getPageWidth(), .001);
-        assertEquals(height, settings2.getPageHeight(), .001);
+        assertEquals(width, settings2.getPageWidthMM(), .001);
+        assertEquals(height, settings2.getPageHeightMM(), .001);
     }
 
     private void doTestPatternFailure(String dimensions) {

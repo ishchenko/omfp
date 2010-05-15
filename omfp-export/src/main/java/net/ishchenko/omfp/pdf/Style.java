@@ -24,13 +24,14 @@ public class Style {
 
     private Fonts fonts;
     private HyphenationEvent hyphenationAuto;
-    private Dimensions dimensions;
+    private PdfSettings settings;
 
     public Style(PdfSettings settings) throws IOException, DocumentException {
 
+        this.settings = settings;
+
         fonts = new Fonts(settings);
         hyphenationAuto = new HyphenationAuto("ru", "none", 2, 2);
-        dimensions = new Dimensions(settings);
 
     }
 
@@ -52,7 +53,7 @@ public class Style {
 
             paragraph.setLeading(fontBuilder.italic().small().getLeading());
             paragraph.setFirstLineIndent(0);
-            paragraph.setIndentationLeft(dimensions.getPageWidth() / 4);
+            paragraph.setIndentationLeft(settings.getPageHeightMM() / 4);
             if (context.stackHas(FictionBookWalker.Hints.AUTHOR.getClass())) {
                 paragraph.setAlignment(Element.ALIGN_RIGHT);
             }
@@ -187,17 +188,17 @@ public class Style {
     }
 
     public void applyToDocument(Document pdf) {
-        applyToDocument(pdf, dimensions.getMargin());
+        applyToDocument(pdf, settings.getMarginPoints());
     }
 
     public void applyToDocument(Document pdf, float footnoteSpace) {
-        pdf.setPageSize(new Rectangle(dimensions.getPageWidth(), dimensions.getPageHeight()));
-        pdf.setMargins(dimensions.getMargin(), dimensions.getMargin(), dimensions.getMargin(), footnoteSpace);
+        pdf.setPageSize(new Rectangle(settings.getPageWidthPoints(), settings.getPageHeightPoints()));
+        pdf.setMargins(settings.getMarginPoints(), settings.getMarginPoints(), settings.getMarginPoints(), footnoteSpace);
     }
 
     public void applyToFullPageImage(Image image) {
         image.setAlignment(Element.ALIGN_CENTER);
-        image.scaleToFit(dimensions.getPageWidth() - dimensions.getMargin() * 2, dimensions.getPageHeight() - dimensions.getMargin() * 2);
+        image.scaleToFit(settings.getPageWidthPoints() - settings.getMarginPoints() * 2, settings.getPageHeightPoints() - settings.getMarginPoints() * 2);
     }
 
     private boolean isInsideAnnotation(ProcessingContext context) {
@@ -243,7 +244,7 @@ public class Style {
     }
 
     public float getMargin() {
-        return dimensions.getMargin();
+        return settings.getMarginPoints();
     }
 
     public void drawFootnotLine(PdfContentByte directContent, Document document, float yline) {

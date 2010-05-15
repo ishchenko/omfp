@@ -13,28 +13,22 @@ import java.util.regex.Pattern;
  */
 public class PdfSettings {
 
-    private boolean multiLevelOutline;
+    public static final float MM_TO_POINTS = 72.0f / 25.4f;
+
+    private boolean multiLevelOutline = true;
 
     private String device;
-    private String baseFontPath;
-    private float size;
-    private float sizeSmall;
-    private float sizeVerysmall;
+    private String baseFontPath = "LiberationSerif-Regular.ttf";
+    private float size = 9;
+    private float sizeSmall = 7;
+    private float sizeVerysmall = 5;
 
-    private float pageWidth;
-    private float pageHeight;
-    private float margin;
+    //defaults are for prs-505
+    private float pageWidth = 88.2f;
+    private float pageHeight = 113.9f;
+    private float margin = 2;
 
-    private PdfSettings(Builder builder) {
-        this.baseFontPath = builder.baseFontPath;
-        this.multiLevelOutline = builder.multiLevelOutline;
-        this.pageHeight = builder.pageHeight;
-        this.pageWidth = builder.pageWidth;
-        this.margin = builder.margin;
-        this.size = builder.size;
-        this.sizeSmall = builder.sizeSmall;
-        this.sizeVerysmall = builder.sizeVerysmall;
-        this.device = builder.device;
+    private PdfSettings() {
     }
 
     public boolean isMultiLevelOutline() {
@@ -45,16 +39,28 @@ public class PdfSettings {
         return baseFontPath;
     }
 
-    public float getPageHeight() {
+    public float getPageHeightMM() {
         return pageHeight;
     }
 
-    public float getPageWidth() {
+    public float getPageWidthMM() {
         return pageWidth;
     }
 
-    public float getMargin() {
+    public float getMarginMM() {
         return margin;
+    }
+
+    public float getPageHeightPoints() {
+        return pageHeight * MM_TO_POINTS;
+    }
+
+    public float getPageWidthPoints() {
+        return pageWidth * MM_TO_POINTS;
+    }
+
+    public float getMarginPoints() {
+        return margin * MM_TO_POINTS;
     }
 
     public float getSize() {
@@ -77,26 +83,14 @@ public class PdfSettings {
 
         private static final Pattern DIMENSIONS_PATTERN = Pattern.compile("(\\d+(?:\\.\\d+)?)\\sx\\s(\\d+(?:\\.\\d+)?)");
 
-        private String device;
-        private String baseFontPath = "LiberationSerif-Regular.ttf";
-        private float size = 9;
-        private float sizeSmall = 7;
-        private float sizeVerysmall = 5;
-
-        private boolean multiLevelOutline = true;
-
-        //defaults are for prs-505
-        private float pageWidth = 88.2f;
-        private float pageHeight = 113.9f;
-
-        private float margin = 2;
+        private PdfSettings instance;
 
         public static enum StyleType {
             NATIVE, FB2PDF
         }
 
         public Builder(InputStream settings, StyleType styleType) throws IOException, InvalidConfigurationException {
-
+            this();
             switch (styleType) {
                 case NATIVE:
                     SettingsUtils.loadFromProperties(settings, this);
@@ -108,15 +102,16 @@ public class PdfSettings {
         }
 
         public Builder() {
+            instance = new PdfSettings();
         }
 
         public Builder baseFontPath(String path) {
-            this.baseFontPath = path;
+            instance.baseFontPath = path;
             return this;
         }
 
         public Builder multiLevelOutline(boolean multiLevelOutline) {
-            this.multiLevelOutline = multiLevelOutline;
+            instance.multiLevelOutline = multiLevelOutline;
             return this;
         }
 
@@ -135,42 +130,42 @@ public class PdfSettings {
         }
 
         public Builder pageWidth(float pageWidth) {
-            this.pageWidth = pageWidth;
+            instance.pageWidth = pageWidth;
             return this;
         }
 
         public Builder pageHeight(float pageHeight) {
-            this.pageHeight = pageHeight;
+            instance.pageHeight = pageHeight;
             return this;
         }
 
         public Builder margin(float margin) {
-            this.margin = margin;
+            instance.margin = margin;
             return this;
         }
 
         public Builder size(float size) {
-            this.size = size;
+            instance.size = size;
             return this;
         }
 
         public Builder sizeSmall(float sizeSmall) {
-            this.sizeSmall = sizeSmall;
+            instance.sizeSmall = sizeSmall;
             return this;
         }
 
         public Builder sizeVerysmall(float sizeVerysmall) {
-            this.sizeVerysmall = sizeVerysmall;
+            instance.sizeVerysmall = sizeVerysmall;
             return this;
         }
 
         public Builder device(String device) {
-            this.device = device;
+            instance.device = device;
             return this;
         }
 
         public PdfSettings build() {
-            return new PdfSettings(this);
+            return instance;
         }
 
     }

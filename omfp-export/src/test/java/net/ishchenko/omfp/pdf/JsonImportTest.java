@@ -23,12 +23,12 @@ public class JsonImportTest {
         InputStream input = SettingsBuilderTest.class.getResourceAsStream("/new.stylesheet.json");
         PdfSettings settings = new PdfSettings.Builder(input, PdfSettings.Builder.StyleType.FB2PDF).build();
 
-        assertEquals(111.11f, settings.getPageWidth(), .001);
-        assertEquals(222.22f, settings.getPageHeight(), .001);
+        assertEquals(111.11f, settings.getPageWidthMM(), .001);
+        assertEquals(222.22f, settings.getPageHeightMM(), .001);
         assertEquals(13f, settings.getSize(), .001);
         assertEquals(13f * .777f, settings.getSizeSmall(), .001);
         assertEquals(13f * .555f, settings.getSizeVerysmall(), .001);
-        assertEquals(3.14f, settings.getMargin(), .001);
+        assertEquals(3.14f, settings.getMarginMM(), .001);
 
     }
 }
