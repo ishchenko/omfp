@@ -47,7 +47,7 @@ public class MultilevelOutlineGeneratorTest {
         final PdfSettings settings = new PdfSettings.Builder().
                 multiLevelOutline(true).
                 //test basedir is module root
-                baseFontPath("../src/main/resources/styles/LiberationSerif-Regular.ttf").
+                baseFontPath("../target/resources/styles/LiberationSerif-Regular.ttf").
                 build();
 
 
