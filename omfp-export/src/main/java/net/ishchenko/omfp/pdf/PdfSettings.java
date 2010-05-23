@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
  * Date: 20.03.2010
  * Time: 21:09:23
  */
-public class PdfSettings {
+public class PdfSettings implements Cloneable {
 
     public static final float MM_TO_POINTS = 72.0f / 25.4f;
 
@@ -105,6 +105,15 @@ public class PdfSettings {
 
     public String getDevice() {
         return device;
+    }
+
+    @Override
+    protected PdfSettings clone() {
+        try {
+            return (PdfSettings) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
     }
 
     public static class Builder {
@@ -251,7 +260,7 @@ public class PdfSettings {
         }
 
         public PdfSettings build() {
-            return instance;
+            return instance.clone();
         }
 
     }
