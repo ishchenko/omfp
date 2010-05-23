@@ -33,7 +33,7 @@ public class OmfpCli {
 
     public static void main(String[] args) throws Exception {
 
-        sanityChecks();
+        Directories dirs = Directories.newDefaultDirectories();
 
         CommandLine line = parseCommandLine(args, options);
         String[] inputFilenames = parseInputFilenames(options, line);
@@ -48,7 +48,7 @@ public class OmfpCli {
         File outFile = new File(outParent, outPath);
 
 
-        File stylesFile = getStylesFile(line);
+        File stylesFile = getStylesFile(line, dirs);
         FileInputStream settingsStream = new FileInputStream(stylesFile);
         PdfSettings.Builder.StyleType styleType = PdfSettings.Builder.StyleType.NATIVE;
         if (stylesFile.getName().endsWith(".json")) {
@@ -71,7 +71,7 @@ public class OmfpCli {
             if (line.getOptionValue("p") != null) {
                 previewDevice = line.getOptionValue("p");
             }
-            new OmfpGui().show(outFile, previewDevice);
+            new OmfpGui().show(outFile, previewDevice, dirs);
 
         }
 
@@ -80,20 +80,20 @@ public class OmfpCli {
     /**
      * Choosing a style file. $basedir/styles/default reference is used if no style specified
      */
-    private static File getStylesFile(CommandLine line) throws IOException {
+    private static File getStylesFile(CommandLine line, Directories dirs) throws IOException {
 
         String styleOptionValue = line.getOptionValue("s");
 
         if (styleOptionValue != null) {
 
-            return new File(styleOptionValue).isAbsolute() ? new File(styleOptionValue) : new File(getBasedirPath(), styleOptionValue);
+            return new File(styleOptionValue).isAbsolute() ? new File(styleOptionValue) : new File(dirs.getBaseDir(), styleOptionValue);
 
         } else {
 
             //using default style referenced by <basedir>/styles/default
-            final String defaultStyleReference = FileUtils.readFileToString(new File(getStyleDirPath(), "default"));
+            final String defaultStyleReference = FileUtils.readFileToString(dirs.getDefaultStyleFile());
 
-            File[] referenceMatches = new File(getStyleDirPath()).listFiles(new FilenameFilter() {
+            File[] referenceMatches = new File(dirs.getStylesDir()).listFiles(new FilenameFilter() {
                 public boolean accept(File dir, String name) {
                     return name.matches(defaultStyleReference + ".properties") || name.matches(defaultStyleReference);
                 }
@@ -104,20 +104,6 @@ public class OmfpCli {
                 throw new IOException("Cannot find style \"" + defaultStyleReference + ")\" referenced in styles/default");
             }
 
-        }
-    }
-
-    private static String getBasedirPath() {
-        return System.getProperty("basedir");
-    }
-
-    private static String getStyleDirPath() {
-        return getBasedirPath() + File.separator + "styles";
-    }
-
-    private static void sanityChecks() {
-        if (getBasedirPath() == null) {
-            throw new RuntimeException("Please, set 'basedir' environment variable (path to directory with styles, devices, lib etc)");
         }
     }
 

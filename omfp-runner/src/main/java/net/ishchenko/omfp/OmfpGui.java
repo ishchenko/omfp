@@ -14,12 +14,11 @@ import java.io.IOException;
  */
 public class OmfpGui {
 
-    public void show(final File output, final String deviceName) {
+    public void show(final File output, final String deviceName, Directories dirs) {
 
         File device = null;
         if (deviceName != null) {
-            //todo: unify paths construction
-            File deviceDir = new File(System.getProperty("basedir") + File.separator + "devices");
+            File deviceDir = new File(dirs.getBaseDir(), "devices");
             File[] matchingDevices = deviceDir.listFiles(new FilenameFilter() {
                 public boolean accept(File dir, String name) {
                     return name.matches(deviceName + "--.+");
